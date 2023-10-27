@@ -1,0 +1,29 @@
+{
+    "name": "hdgarau/runners",
+    "description": "Control process runned for Laravel like migrations",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hdgarau\\Runners\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hdgarau\\Runners\\RunnerSeriviceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "hdgarau",
+            "email": "hdgarau@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/database": "^10.29",
+        "illuminate/config": "^10.29"
+    },
+    "version": "1.0.0"
+}

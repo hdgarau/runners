@@ -1,0 +1,14 @@
+<?php
+
+namespace {{ runnerNamespace }};
+
+use Hdgarau\Runners\iRunner;
+
+class {{ runner }}Runner implements iRunner
+{
+    public function handler(): bool
+    {
+        //Your code to run
+        return true; //or false if fail
+    }
+}
