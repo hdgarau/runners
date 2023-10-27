@@ -11,7 +11,7 @@ class RunnerTablesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'runner-handler:tables';
+    protected $signature = 'runner:tables';
 
     /**
      * The console command description.
