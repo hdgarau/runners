@@ -21,7 +21,7 @@ class RunnerModel extends Model implements iRunnerModel
 
     public function deleteByDatatimeRange( \Datetime $from ,\Datetime $since ) : int
     {
-        return $this->whereDateBetween('create_at',[$from, $since])->delete();
+        return $this->whereDateBetween('created_at',[$from, $since])->delete();
     }
     public function deleteByClassName( string $className ) : int
     {

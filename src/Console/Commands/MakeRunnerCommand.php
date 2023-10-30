@@ -44,14 +44,13 @@ class MakeRunnerCommand extends GeneratorCommand
     protected function _setPrefix()
     {
         $prefix = RunnerHandler::count();
-        $prefix += count(\File::allFiles($this::getPathDestiny()));
+        //$prefix += count(\File::allFiles($this::getPathDestiny()));
         $prefix = str_pad($prefix, 5, '0', STR_PAD_LEFT);
         $this->_prefix = $prefix . '_';
     }
 
     public function handle()
     {
-        //
         $this->_setPrefix();
         return parent::handle();
     }
@@ -95,7 +94,9 @@ class MakeRunnerCommand extends GeneratorCommand
     }
     static public function getPathDestiny()
     {
-        return database_path('/runners/');
+        $path = config('runners.path');
+        \File::ensureDirectoryExists($path);
+        return $path;
     }
 
     /**

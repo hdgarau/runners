@@ -27,11 +27,16 @@ class RunnerCommand extends Command
     public function handle()
     {
         //
-        $path = $this->argument('path') ?? MakeRunnerCommand::getPathDestiny();
-        $allFiles = \File::allFiles($path);
-        foreach($allFiles as $file)
+        $paths = $this->argument('path') ? 
+            explode(',',$this->argument('path')) :
+            [ MakeRunnerCommand::getPathDestiny() ];
+        foreach( $paths as $path )
         {
-            $this->_run($file);
+            $allFiles = \File::allFiles($path);
+            foreach($allFiles as $file)
+            {
+                $this->_run($file);
+            }
         }
         return self::SUCCESS;
     }
