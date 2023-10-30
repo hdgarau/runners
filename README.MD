@@ -2,7 +2,7 @@
 
 ## DESCRIPTION
 
-Package from laravel to store process runned. You can run N times a procces (once by default)
+Package from laravel to store the processes runned. You can run N times a procces (once by default)
 
 ## INSTALATION
 
@@ -51,7 +51,7 @@ static public function run( string $className, array $params = [] ) : bool
 # Execute if it never was executed
 static public function once( string $className, array $params = [] ) : bool
 
-# Execute if times was executed lower than $times 
+# Execute if it was count times executed lower than $times 
 static public function times( string $className, int $times, array $params = [] ) : bool
 
 ```
