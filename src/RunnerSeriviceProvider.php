@@ -1,6 +1,7 @@
 <?php
 namespace Hdgarau\Runners;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 
 class RunnerSeriviceProvider extends ServiceProvider
@@ -13,6 +14,7 @@ class RunnerSeriviceProvider extends ServiceProvider
                 __DIR__ . '/../config/' => config_path(),
             ], 'laravel-assets');
         }
+        Artisan::call('config:cache');
         $modelHandler = config('runners.default');
         $class = config('runners.models.' . $modelHandler . '.class');
         $params = config('runners.models.' . $modelHandler . '.params') ?? [];
