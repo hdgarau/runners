@@ -14,12 +14,14 @@ class RunnerSeriviceProvider extends ServiceProvider
                 __DIR__ . '/../config/' => config_path(),
             ], 'laravel-assets');
         }
-        Artisan::call('config:cache');
+        //Artisan::call('config:cache');
         $modelHandler = config('runners.default');
         $class = config('runners.models.' . $modelHandler . '.class');
         $params = config('runners.models.' . $modelHandler . '.params') ?? [];
-
-        RunnerHandler::setModel(new $class(...$params));
+        try{
+            RunnerHandler::setModel(new $class(...$params));
+        } catch(\Exception $e){
+        }
     }
     public function register()
     {
