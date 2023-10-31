@@ -38,13 +38,25 @@ class RunnerCommand extends Command
                 $this->_run($file);
             }
         }
+        $allFiles = \File::allFiles(config('path-allways'));
+        foreach($allFiles as $file)
+        {
+            $this->_run($file,false);
+        }
         return self::SUCCESS;
     }
-    protected function _run($file)
+    protected function _run($file, $allways = false )
     {
         require_once $file;
         $className = $this->_parseClassName($file);
-        if(RunnerHandler::once($className))
+        if($allways)
+        {
+            if(RunnerHandler::run($className,[], false))
+            {
+                $this->info('Runned (allways) ................ ' . $className);
+            }
+        }
+        elseif(RunnerHandler::once($className))
         {
             $this->info('Runned ................ ' . $className);
         }

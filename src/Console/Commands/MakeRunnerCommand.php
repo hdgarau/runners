@@ -16,7 +16,7 @@ class MakeRunnerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:runner';
+    protected $name = 'make:runner {--allways}';
 
     /**
      * The console command description.
@@ -92,9 +92,9 @@ class MakeRunnerCommand extends GeneratorCommand
             array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
-    static public function getPathDestiny()
+    static public function getPathDestiny($allways = null)
     {
-        $path = config('runners.path');
+        $path = is_null($allways) ? config('runners.path') : config('runners.path-allways');
         \File::ensureDirectoryExists($path);
         return $path;
     }
@@ -107,8 +107,7 @@ class MakeRunnerCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = (string) Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Runner');
-        
-        return $this::getPathDestiny() . $this->_prefix . str_replace('\\', '/', $name).'.php';
+        $name = (string) Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Runner');        
+        return $this::getPathDestiny($this->option('allways')) . $this->_prefix . str_replace('\\', '/', $name).'.php';
     }
 }

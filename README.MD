@@ -45,8 +45,8 @@ You can define the model on enviroment variable RUNNER_MODEL. That one must impl
 ```
 \Hdgarau\Runners\RunnerHandler       
 
-# Execute without check
-static public function run( string $className, array $params = [] ) : bool
+# Execute without check. if $store is false, Runner will not registred
+static public function run( string $className, array $params = [],bool $store = true ) : bool
 
 # Execute if it never was executed
 static public function once( string $className, array $params = [] ) : bool
@@ -63,6 +63,12 @@ static public function times( string $className, int $times, array $params = [] 
 Make a new runner
 ```
 php artisan make:runner [NAME]
+```
+
+Make a new runner (that one will run every times)
+
+```
+php artisan make:runner --allways [NAME]
 ```
 
 ### RUN
