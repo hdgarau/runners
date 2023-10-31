@@ -16,12 +16,10 @@ class RunnerSeriviceProvider extends ServiceProvider
         }
         //Artisan::call('config:cache');
         $modelHandler = config('runners.default');
-        $class = config('runners.models.' . $modelHandler . '.class');
+        $class = config('runners.models.' . $modelHandler . '.class') ?? RunnerModel::class;
         $params = config('runners.models.' . $modelHandler . '.params') ?? [];
-        try{
-            RunnerHandler::setModel(new $class(...$params));
-        } catch(\Exception $e){
-        }
+
+        RunnerHandler::setModel(new $class(...$params));
     }
     public function register()
     {
