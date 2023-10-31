@@ -17,7 +17,7 @@ class MakeRunnerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:runner';
+    protected $signature = 'make:runner {--allways} {name}';
 
     /**
      * The console command description.
@@ -39,23 +39,13 @@ class MakeRunnerCommand extends GeneratorCommand
      * @return string
      */
   
-    protected function specifyParameters()
-    {
-        $this->getDefinition()->addOption(new InputOption(
-            'allways',
-            null,
-            InputOption::VALUE_OPTIONAL,
-            'Do not run the command if another instance of the command is already running'
-        ));
-        parent::specifyParameters();
-    }  
     protected function getStub()
     {
         return $this->resolveStubPath('/stubs/runner.stub');
     }
     protected function _setPrefix()
     {
-        $prefix = RunnerHandler::count();
+        $prefix = count(\File::files(static::getPathDestiny($this->option('allways'))));
         //$prefix += count(\File::allFiles($this::getPathDestiny()));
         $prefix = str_pad($prefix, 5, '0', STR_PAD_LEFT);
         $this->_prefix = $prefix . '_';
@@ -106,7 +96,7 @@ class MakeRunnerCommand extends GeneratorCommand
     }
     static public function getPathDestiny($allways = null)
     {
-        $path = is_null($allways) ? config('runners.path') : config('runners.path-allways');
+        $path = !$allways ? config('runners.path') : config('runners.path-allways');
         \File::ensureDirectoryExists($path);
         return $path;
     }

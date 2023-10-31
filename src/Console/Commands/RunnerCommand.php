@@ -32,13 +32,13 @@ class RunnerCommand extends Command
             [ MakeRunnerCommand::getPathDestiny() ];
         foreach( $paths as $path )
         {
-            $allFiles = \File::allFiles($path);
+            $allFiles = \File::files($path);
             foreach($allFiles as $file)
             {
                 $this->_run($file);
             }
         }
-        $allFiles = \File::allFiles(config('runners.path-allways'));
+        $allFiles = \File::files(config('runners.path-allways'));
         foreach($allFiles as $file)
         {
             $this->_run($file,true);
@@ -58,7 +58,7 @@ class RunnerCommand extends Command
         }
         elseif(RunnerHandler::once($className))
         {
-            $this->info('Runned ........................... ' . $className);
+            $this->info('Runned .......................... ' . $className);
         }
     }
     protected function _parseClassName(string $file)
