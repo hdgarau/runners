@@ -38,7 +38,7 @@ class RunnerCommand extends Command
                 $this->_run($file);
             }
         }
-        $allFiles = \File::files(config('runners.path-allways'));
+        $allFiles = \File::files(MakeRunnerCommand::getPathDestiny(true) );
         foreach($allFiles as $file)
         {
             $this->_run($file,true);
