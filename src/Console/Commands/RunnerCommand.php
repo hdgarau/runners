@@ -38,10 +38,10 @@ class RunnerCommand extends Command
                 $this->_run($file);
             }
         }
-        $allFiles = \File::allFiles(config('path-allways'));
+        $allFiles = \File::allFiles(config('runners.path-allways'));
         foreach($allFiles as $file)
         {
-            $this->_run($file,false);
+            $this->_run($file,true);
         }
         return self::SUCCESS;
     }
@@ -58,7 +58,7 @@ class RunnerCommand extends Command
         }
         elseif(RunnerHandler::once($className))
         {
-            $this->info('Runned ................ ' . $className);
+            $this->info('Runned ........................... ' . $className);
         }
     }
     protected function _parseClassName(string $file)

@@ -8,7 +8,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Hdgarau\Runners\RunnerHandler;
 
-#[AsCommand(name: 'make:runner --allways')]
+#[AsCommand(name: 'make:runner')]
+#[InputOption(name: 'allways')]
 class MakeRunnerCommand extends GeneratorCommand
 {
     /**
@@ -16,7 +17,7 @@ class MakeRunnerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:runner {--allways}';
+    protected $name = 'make:runner';
 
     /**
      * The console command description.
@@ -37,6 +38,17 @@ class MakeRunnerCommand extends GeneratorCommand
      *
      * @return string
      */
+  
+    protected function specifyParameters()
+    {
+        $this->getDefinition()->addOption(new InputOption(
+            'allways',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Do not run the command if another instance of the command is already running'
+        ));
+        parent::specifyParameters();
+    }  
     protected function getStub()
     {
         return $this->resolveStubPath('/stubs/runner.stub');
