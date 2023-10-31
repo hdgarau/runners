@@ -8,7 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Hdgarau\Runners\RunnerHandler;
 
-#[AsCommand(name: 'make:runner')]
+#[AsCommand(name: 'make:runner --allways')]
 class MakeRunnerCommand extends GeneratorCommand
 {
     /**
