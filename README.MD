@@ -68,7 +68,7 @@ php artisan make:runner [NAME]
 Make a new runner (that one will run every times)
 
 ```
-php artisan make:runner --allways [NAME]
+php artisan make:runner --always [NAME]
 ```
 
 ### RUN

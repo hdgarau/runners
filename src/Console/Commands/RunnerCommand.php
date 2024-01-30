@@ -45,15 +45,15 @@ class RunnerCommand extends Command
         }
         return self::SUCCESS;
     }
-    protected function _run($file, $allways = false )
+    protected function _run($file, $always = false )
     {
         require_once $file;
         $className = $this->_parseClassName($file);
-        if($allways)
+        if($always)
         {
             if(RunnerHandler::run($className,[], false))
             {
-                $this->info('Runned (allways) ................ ' . $className);
+                $this->info('Runned (always) ................ ' . $className);
             }
         }
         elseif(RunnerHandler::once($className))
