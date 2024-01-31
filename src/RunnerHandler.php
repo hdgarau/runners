@@ -56,4 +56,19 @@
         {
             return static::$_model->add( $className);
         }
+        static public function createJobFromPath(string $path, bool $always = false,array $params = [])
+        {
+            $className = static::_parseClassName($path);
+            return new RunnerJob(new $className(...$params), $always);
+        }
+
+        static protected function _parseClassName(string $file) :string
+        {
+            $filestr = file_get_contents($file);
+            preg_match('/\bnamespace\b.+?(\w+\\\\?)+/i' ,$filestr, $matches);
+            $namespace = trim(substr($matches[0],10));
+            preg_match('/\bclass\b.+?(\w+)/i' ,$filestr, $matches);
+            $className = $matches[1];
+            return $namespace . '\\' . $className;
+        }
     }

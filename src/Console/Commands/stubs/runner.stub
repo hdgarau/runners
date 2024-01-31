@@ -11,4 +11,13 @@ class {{ runner }}Runner implements iRunner
         //Your code to run
         return true; //or false if fail
     }
+    /**
+     * run after those classes
+    **/ 
+    public function dependencies() : array
+    {
+        //Example
+        // return [ \Database\Runners\WaitingToRunThatJob::class, .... ] 
+        return [];
+    }
 }

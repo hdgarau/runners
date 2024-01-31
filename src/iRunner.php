@@ -4,4 +4,5 @@
     interface iRunner
     {
         public function handler() : bool;
+        public function dependencies() : array;
     }
