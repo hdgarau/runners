@@ -8,7 +8,20 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
         protected array $_runners = [];
         protected array $_runnedJobs = [];
         protected bool $_wasRunned = false;
+        protected array $_output = [];
 
+        public function writeLine(string $msg)
+        {
+            array_push($this->_output, $msg);
+        }
+        public function clearBuffer( )
+        {
+            $this->_output = [];
+        }
+        public function output() : array
+        {
+            return $this->_output;
+        }
         public function loadFromDirectories( array $paths )
         {
             foreach( $paths as $path )
@@ -43,7 +56,7 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
             $executeSomething = false;
             foreach($this->toRun( ) as $runnerJob)
             {
-                if( $runnerJob->readyToRun( ) );
+                if( $runnerJob->check( ) );
                 {
                     if( $runnerJob->run( ) )
                     {
@@ -51,6 +64,7 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
                         $this->addToRunned( $runnerJob );
                     }
                 }
+                $this->writeLine( $runnerJob->lastMsg( ));
             }
             if( ! $this->finish( ) && $executeSomething )
             {

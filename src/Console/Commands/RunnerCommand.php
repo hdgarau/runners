@@ -34,15 +34,15 @@ class RunnerCommand extends Command
         $runnerQueue = new RunnerQueue();
         $runnerQueue->loadFromDirectories($paths);
         $runnerQueue->run();
+        foreach($runnerQueue->output() as $msg)
+        {
+            $this->info($msg);
+        }
         if($runnerQueue->isLocked())
         {
-            $this->warning('There are some runners pending by deathlock.', $runnerQueue->pendingJobs());
+            $this->warning('There are some runners pending by deathlock.', $runnerQueue->toRunClassNames());
         }
         return self::SUCCESS;
-        while($runnerQueue->pendingJobs() && !$runnerQueue->isLocked())
-        {
-            
-        }
     }
     protected function _run($file, $always = false )
     {

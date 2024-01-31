@@ -30,6 +30,10 @@
         {
             return static::$_model->count($className) ?? 0;
         }
+        static public function all ( ) : array
+        {
+            return static::$_model->all();
+        }
 
         static public function setModel( iRunnerModel $model )
         {

@@ -8,4 +8,5 @@
         public function deleteByDatatimeRange( \Datetime $from ,\Datetime $since ) : int;
         public function deleteByClassName( string $className ) : int;
         public function clear(  ) : bool;
+        public function all(  ) : array;
     }
