@@ -17,16 +17,7 @@ class {{ runner }}Runner implements iRunner
     public function dependencies() : array
     {
         //Example
-        // return [ \Database\Runners\WaitingToRunThatJob::class, .... ] 
-        return [];
-    }
-    /**
-     * classes needed (runned any instance) before to run 
-    **/ 
-    public function runnedOnce() : array
-    {
-        //Example
-        // return [ \Database\Runners\CheckIfWasRunnedOnceThisJob::class, .... ] 
+        // return [ __namespace__ . '\\WaitingToRunThatJob', .... ]; 
         return [];
     }
 

@@ -31,16 +31,12 @@ class RunnerCommand extends Command
         $paths = $this->argument('path') ? 
             explode(',',$this->argument('path')) :
             [ MakeRunnerCommand::getPathDestiny() ];
-        $runnerQueue = new RunnerQueue();
+        $runnerQueue = new RunnerQueue($this);
         $runnerQueue->loadFromDirectories($paths);
-        $runnerQueue->run();
-        foreach($runnerQueue->output() as $msg)
-        {
-            $this->info($msg);
-        }
+        $runnerQueue->run( );
         if($runnerQueue->isLocked())
         {
-            $this->warning('There are some runners pending by deathlock.', $runnerQueue->toRunClassNames());
+            $this->warn('There are some runners pending by deathlock.');
         }
         return self::SUCCESS;
     }

@@ -2,25 +2,17 @@
     namespace Hdgarau\Runners;
 
 use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
+use Hdgarau\Runners\Console\Commands\RunnerCommand;
 
     class RunnerQueue
     {
         protected array $_runners = [];
         protected array $_runnedJobs = [];
         protected bool $_wasRunned = false;
-        protected array $_output = [];
 
-        public function writeLine(string $msg)
+        public function __construct(protected RunnerCommand $_command)
         {
-            array_push($this->_output, $msg);
-        }
-        public function clearBuffer( )
-        {
-            $this->_output = [];
-        }
-        public function output() : array
-        {
-            return $this->_output;
+            
         }
         public function loadFromDirectories( array $paths )
         {
@@ -51,12 +43,15 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
         {
             array_push( $this->_runnedJobs, $runner );
         }
-        public function run( ) : bool
+        public function run( int $round = 1 ) : bool
         {
             $executeSomething = false;
+            $this->_command->info('=============');
+            $this->_command->info('round ' . $round);
+            $this->_command->info('=============');
             foreach($this->toRun( ) as $runnerJob)
             {
-                if( $runnerJob->check( ) );
+                if( $runnerJob->check( $this->runnedClassNames(), $this->toRunClassNames(),$this->runnersClassNames() ) )
                 {
                     if( $runnerJob->run( ) )
                     {
@@ -64,14 +59,24 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
                         $this->addToRunned( $runnerJob );
                     }
                 }
-                $this->writeLine( $runnerJob->lastMsg( ));
+                $this->_print( $runnerJob);
             }
             if( ! $this->finish( ) && $executeSomething )
             {
-                return $this->run( );
+                return $this->run( ++$round);
             }
             $this->_wasRunned = true;
             return $this->finish( );
+        }
+        protected function _print( RunnerJob $runner)
+        {
+            match($runner->status())
+            {
+                RunnerJob::ERROR => $this->_command->error($runner->lastMsg()),
+                RunnerJob::IGNORED => $this->_command->line($runner->lastMsg()),
+                RunnerJob::WAITING => $this->_command->warn($runner->lastMsg()),
+                default => $this->_command->info($runner->lastMsg()),
+            };
         }
         public function finish( ) : bool
         {
@@ -81,6 +86,7 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
         {
             $toRun = [];
             $runnedClassNames = $this->runnedClassNames( );
+
             foreach( $this->_runners as $runner )
             {
                 if( !in_array( $runner->className( ), $runnedClassNames ) )
@@ -98,21 +104,21 @@ use Hdgarau\Runners\Console\Commands\MakeRunnerCommand;
         {
             return $this->_runnedJobs;
         }
-        protected function _className( )
+        protected function _className( ) : callable
         {
             return fn($job) => $job->className( );
         }
         public function runnersClassNames( )
         {
-            return array_map( [ $this, '_className'], $this->_runners);
+            return array_map(  $this->_className( ), $this->_runners);
         }
         public function runnedClassNames()
         {
-            return array_map( [ $this, '_className'], $this->runned());
+            return array_map( $this->_className( ), $this->runned());
         }
         public function toRunClassNames()
         {
-            return array_map( [ $this, '_className'], $this->toRun());
+            return array_map( $this->_className( ), $this->toRun());
         }
         public function isLocked()
         {

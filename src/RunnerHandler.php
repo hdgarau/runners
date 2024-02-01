@@ -5,24 +5,24 @@
     {
         private static iRunnerModel $_model;
 
-        static public function once( string $className, array $params = [] ) : bool
+        static public function once( iRunner $runner ) : bool
         {
-            return static::times($className,1);
+            return static::times($runner,1);
         }
-        static public function run( string $className, array $params = [] ) : bool
+        static public function run( iRunner $runner ) : bool
         {
-            if(static::_classNameToRunner($className, $params )->handler())
+            if($runner->handler( ))
             {
-                static::_add($className);
+                static::_add(get_class($runner));
                 return true;
             }
             return false;
         }
-        static public function times( string $className, int $times, array $params = [] ) : bool
+        static public function times( iRunner $runner, int $times ) : bool
         {
-            if( static::count($className) < $times)
+            if( static::count(get_class($runner)) < $times)
             {
-                return static::run( $className, $params );
+                return static::run( $runner );
             }
             return false;
         }
@@ -32,7 +32,7 @@
         }
         static public function all ( ) : array
         {
-            return static::$_model->all();
+            return static::$_model->allClasses();
         }
 
         static public function setModel( iRunnerModel $model )
@@ -50,11 +50,6 @@
         static public function clear(  ) : bool
         {
             return static::$_model->clear( );
-        }
-        //private methods
-        static private function _classNameToRunner( string $className, array $params = [] ) : iRunner
-        {
-            return new $className(...$params);
         }
         static private function _add( string $className ) : bool
         {

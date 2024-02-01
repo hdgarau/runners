@@ -79,7 +79,7 @@ class RunnerFileModel implements iRunnerModel
         return $prev - count($this->_data);    
     }
 
-    public function all(  ) : array
+    public function allClasses(  ) : array
     {
         return array_unique( array_map(fn($el) => $el->class_name,$this->_data));
     }
