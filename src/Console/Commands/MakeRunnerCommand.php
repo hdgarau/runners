@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Hdgarau\Runners\RunnerHandler;
 
 #[AsCommand(name: 'make:runner')]
-#[InputOption(name: 'allways')]
+#[InputOption(name: 'always')]
 class MakeRunnerCommand extends GeneratorCommand
 {
     /**
@@ -17,7 +17,7 @@ class MakeRunnerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:runner {--allways} {name}';
+    protected $signature = 'make:runner {--always} {name}';
 
     /**
      * The console command description.
@@ -45,7 +45,7 @@ class MakeRunnerCommand extends GeneratorCommand
     }
     protected function _setPrefix()
     {
-        $prefix = count(\File::files(static::getPathDestiny($this->option('allways'))));
+        $prefix = count(\File::files(static::getPathDestiny($this->option('always'))));
         //$prefix += count(\File::allFiles($this::getPathDestiny()));
         $prefix = str_pad($prefix, 5, '0', STR_PAD_LEFT);
         $this->_prefix = $prefix . '_';
@@ -94,9 +94,9 @@ class MakeRunnerCommand extends GeneratorCommand
             array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
-    static public function getPathDestiny($allways = null)
+    static public function getPathDestiny($always = null)
     {
-        $path = !$allways ? config('runners.path') : config('runners.path-allways');
+        $path = !$always ? config('runners.path') : config('runners.path-always');
         \File::ensureDirectoryExists($path);
         return $path;
     }
@@ -110,6 +110,6 @@ class MakeRunnerCommand extends GeneratorCommand
     protected function getPath($name)
     {
         $name = (string) Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Runner');        
-        return $this::getPathDestiny($this->option('allways')) . $this->_prefix . str_replace('\\', '/', $name).'.php';
+        return $this::getPathDestiny($this->option('always')) . $this->_prefix . str_replace('\\', '/', $name).'.php';
     }
 }

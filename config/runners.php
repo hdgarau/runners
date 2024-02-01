@@ -2,7 +2,7 @@
     return [
         'default' => env('RUNNER_MODEL','eloquent'),
         'path' => database_path ('runners/'),
-        'path-allways' => database_path ('runners/allways/'),
+        'path-always' => database_path ('runners/always/'),
         'table' => 'runners',
         'models' => [
             'eloquent' => [

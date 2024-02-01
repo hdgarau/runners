@@ -27,6 +27,10 @@ class RunnerModel extends Model implements iRunnerModel
     {
         return $this->where('class_name', $className )->delete();
     }
+    public function allClasses(  ) : array
+    {
+        return $this->get('class_name')->toArray();
+    }
     public function clear(  ) : bool
     {
         $this->truncate( );

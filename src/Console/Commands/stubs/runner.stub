@@ -11,4 +11,29 @@ class {{ runner }}Runner implements iRunner
         //Your code to run
         return true; //or false if fail
     }
+    /**
+     * classes needed (runned on current instance) before to run 
+    **/ 
+    public function dependencies() : array
+    {
+        //Example
+        // return [ __namespace__ . '\\WaitingToRunThatJob', .... ]; 
+        return [];
+    }
+
+    /**
+     * condition needed or fn to check
+    **/ 
+    public function canRun() : bool|callable
+    {
+        /**
+         * On instance:
+         * $jobsRunned: Jobs Runned at the moment
+         * $jobsToRun: Jobs to run yet
+         * $allJobs: all jobs 
+        **/ 
+        return fn( $jobsRunned, $jobsToRun, $allJobs ) => true;
+        // or
+        // return true;
+    }
 }

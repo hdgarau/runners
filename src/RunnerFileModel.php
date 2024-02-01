@@ -78,6 +78,11 @@ class RunnerFileModel implements iRunnerModel
         $this->save();
         return $prev - count($this->_data);    
     }
+
+    public function allClasses(  ) : array
+    {
+        return array_unique( array_map(fn($el) => $el->class_name,$this->_data));
+    }
     public function clear(  ) : bool
     {
         unlink($this->_fileName );

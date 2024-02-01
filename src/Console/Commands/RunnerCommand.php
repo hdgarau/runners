@@ -3,6 +3,7 @@
 namespace Hdgarau\Runners\Console\Commands;
 
 use Hdgarau\Runners\RunnerHandler;
+use Hdgarau\Runners\RunnerQueue;
 use Illuminate\Console\Command;
 
 class RunnerCommand extends Command
@@ -30,44 +31,29 @@ class RunnerCommand extends Command
         $paths = $this->argument('path') ? 
             explode(',',$this->argument('path')) :
             [ MakeRunnerCommand::getPathDestiny() ];
-        foreach( $paths as $path )
+        $runnerQueue = new RunnerQueue($this);
+        $runnerQueue->loadFromDirectories($paths);
+        $runnerQueue->run( );
+        if($runnerQueue->isLocked())
         {
-            $allFiles = \File::files($path);
-            foreach($allFiles as $file)
-            {
-                $this->_run($file);
-            }
-        }
-        $allFiles = \File::files(MakeRunnerCommand::getPathDestiny(true) );
-        foreach($allFiles as $file)
-        {
-            $this->_run($file,true);
+            $this->warn('There are some runners pending by deathlock.');
         }
         return self::SUCCESS;
     }
-    protected function _run($file, $allways = false )
+    protected function _run($file, $always = false )
     {
         require_once $file;
         $className = $this->_parseClassName($file);
-        if($allways)
+        if($always)
         {
             if(RunnerHandler::run($className,[], false))
             {
-                $this->info('Runned (allways) ................ ' . $className);
+                $this->info('Runned (always) ................ ' . $className);
             }
         }
         elseif(RunnerHandler::once($className))
         {
             $this->info('Runned .......................... ' . $className);
         }
-    }
-    protected function _parseClassName(string $file)
-    {
-        $filestr = file_get_contents($file);
-        preg_match('/\bnamespace\b.+?(\w+\\\\?)+/i' ,$filestr, $matches);
-        $namespace = trim(substr($matches[0],10));
-        preg_match('/\bclass\b.+?(\w+)/i' ,$filestr, $matches);
-        $className = $matches[1];
-        return $namespace . '\\' . $className;
     }
 }
